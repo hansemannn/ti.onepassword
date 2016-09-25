@@ -37,7 +37,7 @@ var isAvailable = OnePassword.isAppExtensionAvailable();
 Request login credentials from 1Password asynchronously:
 ```js
 OnePassword.findLoginForURLString({
-    url: "https://appcelerator.com
+    url: "https://appcelerator.com",
     callback: function(e) {
         // Check if the operation succeeded
         if (!e.success) {
