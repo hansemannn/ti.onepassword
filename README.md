@@ -52,6 +52,10 @@ OnePassword.findLoginForURLString({
 });
 ```
 
+Example
+---------------
+Check `example/app.js` for a full example.
+
 Author
 ---------------
 Hans Knoechel ([@hansemannnn](https://twitter.com/hansemannnn) / [Web](http://hans-knoechel.de))

@@ -27,9 +27,11 @@
 		24DE9E1111C5FE74003F90F6 /* TiOnepasswordModuleAssets.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DE9E0F11C5FE74003F90F6 /* TiOnepasswordModuleAssets.h */; };
 		24DE9E1211C5FE74003F90F6 /* TiOnepasswordModuleAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DE9E1011C5FE74003F90F6 /* TiOnepasswordModuleAssets.m */; };
 		AA747D9F0F9514B9006C5449 /* TiOnepassword_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* TiOnepassword_Prefix.pch */; };
-		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 		DB8D29F51D98876600BDEE1E /* OnePasswordExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = DB8D29F31D98876600BDEE1E /* OnePasswordExtension.h */; };
 		DB8D29F61D98876600BDEE1E /* OnePasswordExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D29F41D98876600BDEE1E /* OnePasswordExtension.m */; };
+		DBBB3E1B1D9905C100543AC9 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBB3E1A1D9905C100543AC9 /* WebKit.framework */; };
+		DBBB3E1C1D9905C800543AC9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
+		DBBB3E1E1D9905D400543AC9 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBB3E1D1D9905D400543AC9 /* MobileCoreServices.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,9 @@
 		D2AAC07E0554694100DB518D /* libTiOnepassword.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTiOnepassword.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB8D29F31D98876600BDEE1E /* OnePasswordExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnePasswordExtension.h; sourceTree = "<group>"; };
 		DB8D29F41D98876600BDEE1E /* OnePasswordExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnePasswordExtension.m; sourceTree = "<group>"; };
+		DBBB3E181D9905A700543AC9 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		DBBB3E1A1D9905C100543AC9 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		DBBB3E1D1D9905D400543AC9 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +65,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */,
+				DBBB3E1E1D9905D400543AC9 /* MobileCoreServices.framework in Frameworks */,
+				DBBB3E1C1D9905C800543AC9 /* Foundation.framework in Frameworks */,
+				DBBB3E1B1D9905C100543AC9 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +96,9 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DBBB3E1D1D9905D400543AC9 /* MobileCoreServices.framework */,
+				DBBB3E1A1D9905C100543AC9 /* WebKit.framework */,
+				DBBB3E181D9905A700543AC9 /* SafariServices.framework */,
 				AACBBE490F95108600F1A2B1 /* Foundation.framework */,
 			);
 			name = Frameworks;

@@ -52,22 +52,33 @@
     
     NSString *url;
     KrollCallback *callback;
+    TiViewProxy *source;
     
     ENSURE_ARG_FOR_KEY(url, args, @"url", NSString);
     ENSURE_ARG_FOR_KEY(callback, args, @"callback", KrollCallback);
+    ENSURE_ARG_OR_NIL_FOR_KEY(source, args, @"source", TiViewProxy);
     
-    // TODO: Expose "source" to map the "sender" property for bar-buttons
+    id sender = nil;
+    
+    if ([source supportsNavBarPositioning] && [source isUsingBarButtonItem]) {
+        sender = [source barButtonItem];
+    } else {
+        sender = [source view];
+    }
     
     [[OnePasswordExtension sharedExtension] findLoginForURLString:url
                                                 forViewController:[[[TiApp app] controller] topPresentedController]
-                                                           sender:nil
+                                                           sender:sender
                                                        completion:^(NSDictionary *loginDictionary, NSError *error) {
                                                            
         NSMutableDictionary *event = [NSMutableDictionary dictionaryWithDictionary:@{
-            @"success": NUMBOOL(error == nil && loginDictionary.count > 0),
-            @"error": error ? [error localizedDescription] : [NSNull null],
-            @"code": NUMINTEGER(error ? [error code] : -1)
+            @"success": NUMBOOL(error == nil && loginDictionary.count > 0)
         }];
+                                                           
+        if (error) {
+            [event setValue:[error localizedDescription] forKey:@"error"];
+            [event setValue:[error code] forKey:@"code"];
+        }
          
         if (loginDictionary.count > 0) {
             NSString *username = loginDictionary[AppExtensionUsernameKey];
@@ -79,7 +90,7 @@
             }
             
             if (password) {
-                [event setValue:username forKey:@"password"];
+                [event setValue:password forKey:@"password"];
             }
             
             if (totp) {

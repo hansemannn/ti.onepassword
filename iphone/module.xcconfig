@@ -1,0 +1,1 @@
+OTHER_LDFLAGS=$(inherited) -weak_framework WebKit -weak_framework MobileCoreServices
