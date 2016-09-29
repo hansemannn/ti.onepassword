@@ -98,6 +98,7 @@ OnePassword.changePasswordForLoginForURLString({
         // Success
     }
 });
+```
 
 #### Available credentials
 - [x] url_string
