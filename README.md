@@ -2,6 +2,8 @@
 
 Support for the AgileBits [1Password App Extention](https://github.com/AgileBits/onepassword-app-extension) in Titanium Mobile to open 1Password for selecting credentials.
 
+<img src="https://abload.de/img/img_965973ke9.png" height="375" alt="1Password with Titanium" />
+
 Features
 ---------------
 - [x] Check if 1Password is installed and can be used
