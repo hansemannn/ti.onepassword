@@ -52,23 +52,13 @@
     
     NSString *url;
     KrollCallback *callback;
-    TiViewProxy *source;
     
     ENSURE_ARG_FOR_KEY(url, args, @"url", NSString);
     ENSURE_ARG_FOR_KEY(callback, args, @"callback", KrollCallback);
-    ENSURE_ARG_OR_NIL_FOR_KEY(source, args, @"source", TiViewProxy);
-    
-    id sender = nil;
-    
-    if ([source supportsNavBarPositioning] && [source isUsingBarButtonItem]) {
-        sender = [source barButtonItem];
-    } else {
-        sender = [source view];
-    }
     
     [[OnePasswordExtension sharedExtension] findLoginForURLString:url
                                                 forViewController:[[[TiApp app] controller] topPresentedController]
-                                                           sender:sender
+                                                           sender:[TiOnepasswordModule senderFromSourceView:[args objectForKey:@"source"]]
                                                        completion:^(NSDictionary *loginDictionary, NSError *error) {
                                                            
         NSMutableDictionary *event = [NSMutableDictionary dictionaryWithDictionary:@{
@@ -87,15 +77,15 @@
             
             if (username) {
                 [event setValue:username forKey:@"username"];
+                NSLog(@"[WARN] Ti.OnePassword: The `username` property will be removed from the top-level of the event in 2.0.0. Use the `credentials` object instead");
             }
             
             if (password) {
                 [event setValue:password forKey:@"password"];
+                NSLog(@"[WARN] Ti.OnePassword: The `password` property will be removed from the top-level of the event in 2.0.0. Use the `credentials` object instead");
             }
             
-            if (totp) {
-                [event setValue:totp forKey:@"totp"];
-            }
+            [event setValue:loginDictionary forKey:@"credentials"];
         }
                                                            
        NSArray * invocationArray = [[NSArray alloc] initWithObjects:&event count:1];
@@ -103,6 +93,101 @@
        [callback call:invocationArray thisObject:self];
        [invocationArray release];
     }];
+}
+
+-(void)storeLoginForURLString:(id)args
+{
+    ENSURE_SINGLE_ARG(args, NSDictionary);
+    
+    NSString *url;
+    KrollCallback *callback;
+    NSDictionary *credentials;
+    NSDictionary *options;
+    
+    ENSURE_ARG_FOR_KEY(url, args, @"url", NSString);
+    ENSURE_ARG_FOR_KEY(callback, args, @"callback", KrollCallback);
+    ENSURE_ARG_FOR_KEY(credentials, args, @"credentials", NSDictionary);
+    ENSURE_ARG_OR_NIL_FOR_KEY(options, args, @"options", NSDictionary);
+    
+    [[OnePasswordExtension sharedExtension] storeLoginForURLString:url
+                                                      loginDetails:credentials
+                                         passwordGenerationOptions:options
+                                                 forViewController:[[[TiApp app] controller] topPresentedController]
+                                                            sender:[TiOnepasswordModule senderFromSourceView:[args objectForKey:@"source"]]
+                                                        completion:^(NSDictionary *loginDictionary, NSError *error) {
+        NSMutableDictionary *event = [NSMutableDictionary dictionaryWithDictionary:@{
+            @"success": NUMBOOL(error == nil && loginDictionary.count > 0)
+        }];
+        
+        if (error) {
+            [event setValue:[error localizedDescription] forKey:@"error"];
+            [event setValue:[error code] forKey:@"code"];
+        }
+        
+        if (loginDictionary.count > 0) {
+            [event setValue:loginDictionary forKey:@"credentials"];
+        }
+                                                            
+        NSArray * invocationArray = [[NSArray alloc] initWithObjects:&event count:1];
+        
+        [callback call:invocationArray thisObject:self];
+        [invocationArray release];
+    }];
+}
+
+-(void)changePasswordForLoginForURLString:(id)args
+{
+    ENSURE_SINGLE_ARG(args, NSDictionary);
+    
+    NSString *url;
+    KrollCallback *callback;
+    NSDictionary *credentials;
+    NSDictionary *options;
+    
+    ENSURE_ARG_FOR_KEY(url, args, @"url", NSString);
+    ENSURE_ARG_FOR_KEY(callback, args, @"callback", KrollCallback);
+    ENSURE_ARG_FOR_KEY(credentials, args, @"credentials", NSDictionary);
+    ENSURE_ARG_OR_NIL_FOR_KEY(options, args, @"options", NSDictionary);
+    
+    [[OnePasswordExtension sharedExtension] changePasswordForLoginForURLString:url
+                                                      loginDetails:credentials
+                                         passwordGenerationOptions:options
+                                                 forViewController:[[[TiApp app] controller] topPresentedController]
+                                                            sender:[TiOnepasswordModule senderFromSourceView:[args objectForKey:@"source"]]
+                                                        completion:^(NSDictionary *loginDictionary, NSError *error) {
+        NSMutableDictionary *event = [NSMutableDictionary dictionaryWithDictionary:@{
+            @"success": NUMBOOL(error == nil && loginDictionary.count > 0)
+        }];
+        
+        if (error) {
+            [event setValue:[error localizedDescription] forKey:@"error"];
+            [event setValue:[error code] forKey:@"code"];
+        }
+        
+        if (loginDictionary.count > 0) {
+            [event setValue:loginDictionary forKey:@"credentials"];
+        }
+        
+        NSArray * invocationArray = [[NSArray alloc] initWithObjects:&event count:1];
+        
+        [callback call:invocationArray thisObject:self];
+        [invocationArray release];
+    }];
+}
+
++(id)senderFromSourceView:(id)value
+{
+    ENSURE_TYPE_OR_NIL(value, TiViewProxy);
+    
+    if (!value) {
+        return nil;
+    }
+    
+    if ([value supportsNavBarPositioning] && [value isUsingBarButtonItem]) {
+        return  [value barButtonItem];
+    }
+    
+    return [value view];
 }
 
 @end

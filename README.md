@@ -5,7 +5,9 @@ Support for the AgileBits [1Password App Extention](https://github.com/AgileBits
 Features
 ---------------
 - [x] Check if 1Password is installed and can be used
-- [x] Receive the login credentials from 1Password
+- [x] Receive login credentials from 1Password
+- [x] Store login credentials in 1Password
+- [x] Change login credentials in 1Password
 
 Usage
 ---------------
@@ -34,7 +36,7 @@ Check if the application supports the 1Password App Extension to show/hide a cus
 var isAvailable = OnePassword.isAppExtensionAvailable();
 ```
 
-Request login credentials from 1Password asynchronously:
+Request login credentials from 1Password:
 ```js
 OnePassword.findLoginForURLString({
     url: "https://appcelerator.com",
@@ -45,16 +47,79 @@ OnePassword.findLoginForURLString({
             return;
         }
 
-        // Prefill the form fields
-        usernameField.setValue(e.username);
-        passwordField.setValue(e.password);
+        // Success - Prefill the form fields
+        usernameField.setValue(e.credentials.username);
+        passwordField.setValue(e.credentials.password);
     }
 });
 ```
+Add a new login to 1Password:
+```js
+OnePassword.storeLoginForURLString({
+    url: "https://appcelerator.com",
+    credentials: {
+        username: "my_username",
+        password: "my_password"
+    },
+    options: {
+        password_min_length: 6,
+        password_max_length: 18
+    },
+    callback: function(e) {
+        if (!e.success) {
+            alert("Credentials could not be added to 1Password: " + e.error);
+            return;
+        }
+
+        // Success
+    }
+});
+```
+Change an existing login in 1Password:
+```js
+OnePassword.changePasswordForLoginForURLString({
+    url: "https://appcelerator.com",
+    credentials: {
+        username: "my_username",
+        password: "my_new_password"
+    },
+    options: {
+        password_min_length: 6,
+        password_max_length: 18
+    },
+    callback: function(e) {
+        if (!e.success) {
+            alert("Credentials could not be added to 1Password: " + e.error);
+            return;
+        }
+
+        // Success
+    }
+});
+
+#### Available credentials
+- [x] url_string
+- [x] username
+- [x] password
+- [x] totp
+- [x] login_title
+- [x] notes
+- [x] section_title
+- [x] fields
+- [x] returned_fields
+- [x] old_password
+- [x] password_generator_options
+
+#### Available options
+- [x] password_min_length
+- [x] password_max_length
+- [x] password_require_digits
+- [x] password_require_symbols
+- [x] password_forbidden_characters
 
 Example
 ---------------
-Check `example/app.js` for a full example.
+Check `example/app.js` for a basic example.
 
 Author
 ---------------
