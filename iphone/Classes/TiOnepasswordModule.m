@@ -17,20 +17,20 @@
 #pragma mark Internal
 
 // this is generated for your module, please do not change it
--(id)moduleGUID
+- (id)moduleGUID
 {
 	return @"3506d384-99f9-409f-a4f3-a1f889af8746";
 }
 
 // this is generated for your module, please do not change it
--(NSString*)moduleId
+- (NSString *)moduleId
 {
 	return @"ti.onepassword";
 }
 
 #pragma mark Lifecycle
 
--(void)startup
+- (void)startup
 {
 	// this method is called when the module is first loaded
 	// you *must* call the superclass
@@ -41,13 +41,14 @@
 
 #pragma Public APIs
 
--(id)isAppExtensionAvailable:(id)unused
+- (id)isAppExtensionAvailable:(id)unused
 {
     return NUMBOOL([[OnePasswordExtension sharedExtension] isAppExtensionAvailable]);
 }
 
--(void)findLoginForURLString:(id)args
+- (void)findLoginForURLString:(id)args
 {
+    ENSURE_UI_THREAD(findLoginForURLString, args);
     ENSURE_SINGLE_ARG(args, NSDictionary);
     
     NSString *url;
@@ -70,21 +71,7 @@
             [event setValue:[error code] forKey:@"code"];
         }
          
-        if (loginDictionary.count > 0) {
-            NSString *username = loginDictionary[AppExtensionUsernameKey];
-            NSString *password = loginDictionary[AppExtensionPasswordKey];
-            NSString *totp = loginDictionary[AppExtensionTOTPKey];
-            
-            if (username) {
-                [event setValue:username forKey:@"username"];
-                NSLog(@"[WARN] Ti.OnePassword: The `username` property will be removed from the top-level of the event in 2.0.0. Use the `credentials` object instead");
-            }
-            
-            if (password) {
-                [event setValue:password forKey:@"password"];
-                NSLog(@"[WARN] Ti.OnePassword: The `password` property will be removed from the top-level of the event in 2.0.0. Use the `credentials` object instead");
-            }
-            
+        if (loginDictionary.count > 0) {            
             [event setValue:loginDictionary forKey:@"credentials"];
         }
                                                            
@@ -95,8 +82,9 @@
     }];
 }
 
--(void)storeLoginForURLString:(id)args
+- (void)storeLoginForURLString:(id)args
 {
+    ENSURE_UI_THREAD(storeLoginForURLString, args);
     ENSURE_SINGLE_ARG(args, NSDictionary);
     
     NSString *url;
@@ -135,8 +123,9 @@
     }];
 }
 
--(void)changePasswordForLoginForURLString:(id)args
+- (void)changePasswordForLoginForURLString:(id)args
 {
+    ENSURE_UI_THREAD(changePasswordForLoginForURLString, args);
     ENSURE_SINGLE_ARG(args, NSDictionary);
     
     NSString *url;
@@ -175,7 +164,7 @@
     }];
 }
 
-+(id)senderFromSourceView:(id)value
++ (id)senderFromSourceView:(id)value
 {
     ENSURE_TYPE_OR_NIL(value, TiViewProxy);
     
