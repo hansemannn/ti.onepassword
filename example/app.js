@@ -23,8 +23,8 @@ btn.addEventListener("click", function() {
             Ti.API.info(JSON.stringify(e));
 
             // Prefill the form fields
-            // usernameField.setValue(e.username);
-            // passwordField.setValue(e.password);
+            // usernameField.setValue(e.credentials.username);
+            // passwordField.setValue(e.credentials.password);
         }
     });
 });
