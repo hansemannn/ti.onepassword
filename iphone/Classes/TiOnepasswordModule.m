@@ -16,13 +16,11 @@
 
 #pragma mark Internal
 
-// this is generated for your module, please do not change it
 - (id)moduleGUID
 {
 	return @"3506d384-99f9-409f-a4f3-a1f889af8746";
 }
 
-// this is generated for your module, please do not change it
 - (NSString *)moduleId
 {
 	return @"ti.onepassword";
@@ -32,8 +30,6 @@
 
 - (void)startup
 {
-	// this method is called when the module is first loaded
-	// you *must* call the superclass
 	[super startup];
 
 	NSLog(@"[DEBUG] %@ loaded",self);
@@ -68,7 +64,7 @@
                                                            
         if (error) {
             [event setValue:[error localizedDescription] forKey:@"error"];
-            [event setValue:[error code] forKey:@"code"];
+            [event setValue:NUMINTEGER([error code]) forKey:@"code"];
         }
          
         if (loginDictionary.count > 0) {            
@@ -109,7 +105,7 @@
         
         if (error) {
             [event setValue:[error localizedDescription] forKey:@"error"];
-            [event setValue:[error code] forKey:@"code"];
+            [event setValue:NUMINTEGER([error code]) forKey:@"code"];
         }
         
         if (loginDictionary.count > 0) {
@@ -150,7 +146,7 @@
         
         if (error) {
             [event setValue:[error localizedDescription] forKey:@"error"];
-            [event setValue:[error code] forKey:@"code"];
+            [event setValue:NUMINTEGER([error code]) forKey:@"code"];
         }
         
         if (loginDictionary.count > 0) {
