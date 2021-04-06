@@ -2,17 +2,17 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 2.0.2
+version: 3.0.0
 apiversion: 2
-architectures: armv7 arm64 i386 x86_64
+architectures: arm64 x86_64
 description: ti.onepassword
 author: Hans Knoechel
 license: Apache 2
-copyright: Copyright (c) 2016-Present by Hans Knoechel
+copyright: Copyright (c) 2016-present by Hans Knoechel
 
 # these should not be edited
 name: ti.onepassword
 moduleid: ti.onepassword
 guid: 3506d384-99f9-409f-a4f3-a1f889af8746
 platform: iphone
-minsdk: 5.5.0
+minsdk: 9.2.0

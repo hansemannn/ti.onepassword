@@ -4,6 +4,12 @@ Support for the AgileBits [1Password App Extention](https://github.com/AgileBits
 
 <img src="https://abload.de/img/img_965973ke9.png" height="375" alt="1Password with Titanium" />
 
+Requirements
+---------------
+
+- [x] iOS 11+
+- [x] Titanium SDK 9.2.0+
+
 Features
 ---------------
 - [x] Check if 1Password is installed and can be used
@@ -30,72 +36,72 @@ Add the following url-scheme to the `<plist>` section of your `tiapp.xml` like t
 
 Require the module:
 ```js
-var OnePassword = require("ti.onepassword");
+import OnePassword from 'ti.onepassword';
 ```
 
 Check if the application supports the 1Password App Extension to show/hide a custom 1Password button:
 ```js
-var isAvailable = OnePassword.isAppExtensionAvailable();
+const isAvailable = OnePassword.isAppExtensionAvailable();
 ```
 
 Request login credentials from 1Password:
 ```js
 OnePassword.findLoginForURLString({
-    url: "https://appcelerator.com",
-    callback: function(e) {
+    url: 'https://appcelerator.com',
+    callback: event => {
         // Check if the operation succeeded
-        if (!e.success) {
-            alert("Login could not be received: " + e.error);
+        if (!event.success) {
+            alert(`Login could not be received: ${event.error}`);
             return;
         }
 
         // Success - Prefill the form fields
-        usernameField.setValue(e.credentials.username);
-        passwordField.setValue(e.credentials.password);
+        usernameField.setValue(event.credentials.username);
+        passwordField.setValue(event.credentials.password);
     }
 });
 ```
 Add a new login to 1Password:
 ```js
 OnePassword.storeLoginForURLString({
-    url: "https://appcelerator.com",
+    url: 'https://appcelerator.com',
     credentials: {
-        username: "my_username",
-        password: "my_password"
+        username: 'my_username',
+        password: 'my_password'
     },
     options: {
         password_min_length: 6,
         password_max_length: 18
     },
-    callback: function(e) {
-        if (!e.success) {
-            alert("Credentials could not be added to 1Password: " + e.error);
+    callback: event => {
+        if (!event.success) {
+            alert(`Credentials could not be added to 1Password: ${event.error}`);
             return;
         }
 
-        // Success
+        // <-- Success case
     }
 });
 ```
 Change an existing login in 1Password:
 ```js
 OnePassword.changePasswordForLoginForURLString({
-    url: "https://appcelerator.com",
+    url: 'https://appcelerator.com',
     credentials: {
-        username: "my_username",
-        password: "my_new_password"
+        username: 'my_username',
+        password: 'my_new_password'
     },
     options: {
         password_min_length: 6,
         password_max_length: 18
     },
-    callback: function(e) {
+    callback: event => {
         if (!e.success) {
-            alert("Credentials could not be added to 1Password: " + e.error);
+            alert(`Credentials could not be updated in 1Password: ${event.error}`);
             return;
         }
 
-        // Success
+        // <-- Success case
     }
 });
 ```
